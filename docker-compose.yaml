@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - website
+      - odoo
+    networks:
+      - app-network
+
+  website:
+    build:
+      context: .  
+      dockerfile: Dockerfile 
+    container_name: apache_website
+    networks:
+      - app-network
+
+  db:
+    image: postgres:16
+    container_name: postgres_db
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo17@2023
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  odoo:
+    image: odoo:17
+    container_name: odoo_app
+    depends_on:
+      - db
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo17@2023
+    command: odoo --proxy-mode 
+    volumes:
+      - odoo-data:/var/lib/odoo
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  odoo-data:
+
