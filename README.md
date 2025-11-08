@@ -14,7 +14,7 @@ Este proyecto demuestra cómo orquestar múltiples servicios (un sitio web está
 ## Estructura del Proyecto
 
 Para que `docker-compose` y `Dockerfile` funcionen correctamente, los archivos deben estar organizados de la siguiente manera:
-
+```bash
 .
  ├── docker-compose.yaml 
  ├── Dockerfile 
@@ -24,6 +24,7 @@ Para que `docker-compose` y `Dockerfile` funcionen correctamente, los archivos d
     ├── index.html 
     ├── script.js 
     └── style.css
+```
 
 ## Instalación y Uso
 
